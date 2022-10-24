@@ -81,8 +81,7 @@ const store = {
   },
   /**
    * Returns an arrays of most expensive items in inventory
-   * @method getExpensiveItems
-   * @param {number} minPrice - the price above which is considered expensive
+  @@ -86,85 +86,112 @@ const store = {
    * @return {array} items - the array of items that are filtered
    */
   getExpensiveItems(minPrice) {
@@ -120,8 +119,8 @@ const store = {
   getItemPrice(itemName) {
     if (this.isItemInStore(itemName)) {
       const newObj = inventory.find((itemObj) => {
-        if (itemObj.name === itemName) return itemObj.price;
-        return -1;
+        if (!(itemObj.name === itemName)) return -1;
+        return itemObj.price;
       });
       return newObj.price;
     } return -1;
@@ -136,13 +135,12 @@ const store = {
        * must use isItemInStore() method in this object
        */
   getItemQuantity(itemName) {
-    if (this.isItemInStore(itemName)) {
-      const newObj = inventory.find((itemObj) => {
-        if (itemObj.name === itemName) return itemObj.quantity;
-        return -1;
-      });
-      return newObj.quantity;
-    } return -1;
+    if (!this.isItemInStore(itemName)) return -1;
+    const newObj = inventory.find((itemObj) => {
+      if (itemObj.name === itemName) return itemObj.quantity;
+      return null;
+    });
+    return newObj.quantity;
   },
 
   /**
@@ -159,9 +157,7 @@ const store = {
   addItemQuantity(itemName, price, quantity) {
     if (this.isItemInStore(itemName)) {
       const objIndex = inventory.findIndex(((obj) => obj.name === itemName));
-      console.log(inventory[objIndex].quantity, quantity);
       inventory[objIndex].quantity += quantity;
-      console.log(inventory[objIndex].quantity);
       return inventory[objIndex].quantity;
     }
     inventory.push({ name: itemName, price, quantity });
@@ -181,8 +177,6 @@ const store = {
   removeItemQuantity(itemName, quantity) {
     if (this.isItemInStore(itemName)) {
       const objIndex = inventory.findIndex(((obj) => obj.name === itemName));
-      console.log('Line 184:', inventory[objIndex].quantity, quantity);
-      if (quantity > inventory[objIndex].quantity) return -1;
       if (inventory[objIndex].quantity >= quantity) {
         inventory[objIndex].quantity -= quantity;
         return inventory[objIndex].quantity;
