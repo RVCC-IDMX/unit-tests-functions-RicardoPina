@@ -121,6 +121,7 @@ const store = {
     if (this.isItemInStore(itemName)) {
       const newObj = inventory.find((itemObj) => {
         if (itemObj.name === itemName) return itemObj.price;
+        return -1;
       });
       return newObj.price;
     } return -1;
@@ -138,6 +139,7 @@ const store = {
     if (this.isItemInStore(itemName)) {
       const newObj = inventory.find((itemObj) => {
         if (itemObj.name === itemName) return itemObj.quantity;
+        return -1;
       });
       return newObj.quantity;
     } return -1;
@@ -157,7 +159,9 @@ const store = {
   addItemQuantity(itemName, price, quantity) {
     if (this.isItemInStore(itemName)) {
       const objIndex = inventory.findIndex(((obj) => obj.name === itemName));
+      console.log(inventory[objIndex].quantity, quantity);
       inventory[objIndex].quantity += quantity;
+      console.log(inventory[objIndex].quantity);
       return inventory[objIndex].quantity;
     }
     inventory.push({ name: itemName, price, quantity });
@@ -177,6 +181,8 @@ const store = {
   removeItemQuantity(itemName, quantity) {
     if (this.isItemInStore(itemName)) {
       const objIndex = inventory.findIndex(((obj) => obj.name === itemName));
+      console.log('Line 184:', inventory[objIndex].quantity, quantity);
+      if (quantity > inventory[objIndex].quantity) return -1;
       if (inventory[objIndex].quantity >= quantity) {
         inventory[objIndex].quantity -= quantity;
         return inventory[objIndex].quantity;
@@ -190,7 +196,7 @@ const store = {
        * must use the reduce() array method
        */
   getTotalValue() {
-    const total = inventory.reduce((total, item) => (item.price * item.quantity) + total, 0);
+    const total = inventory.reduce((totals, item) => (item.price * item.quantity) + totals, 0);
     return total;
   },
 };
