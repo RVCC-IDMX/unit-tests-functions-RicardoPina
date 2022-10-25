@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return */
+/* eslint-disable array-callback-return */
 /*
  * functions-02.js
  * Language: javascript
@@ -119,8 +121,7 @@ const store = {
   getItemPrice(itemName) {
     if (this.isItemInStore(itemName)) {
       const newObj = inventory.find((itemObj) => {
-        if (!(itemObj.name === itemName)) return -1;
-        return itemObj.price;
+        if (itemObj.name === itemName) return itemObj.price;
       });
       return newObj.price;
     } return -1;
